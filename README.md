@@ -2,4 +2,4 @@
 
 ### Tengo 27 años
 
-![me?](C:\Dev\Aplicaciones_web\imgs)
+![me?](C:\Dev\Aplicaciones_web\docs\imgs)
