@@ -22,6 +22,15 @@ html {
     max-width: 100%;
     width: 50%;
   }
+
+  .custom-carousel {
+    height: 50%;
+    width: cover;
+}
+.custom-carousel .carousel-inner, .custom-carousel .carousel-item, .custom-carousel .carousel-item img
+ {
+   height: 50%;
+}
   
   td,
   th {
