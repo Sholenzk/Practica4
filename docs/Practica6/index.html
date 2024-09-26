@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simulador de Tienda en Línea</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <h1>Simulador de Tienda en Línea</h1>
@@ -44,9 +44,13 @@
       </article>
     </section>
     <section id="mensaje-compra" class="hidden">
-      <h2>¡Compra realizada con éxito!</h2>
-      <p>Gracias por su compra.</p>
-    </section>
+      <div class="float">
+          <h2>Procesando compra</h2>
+          <p>Espere un momento</p>
+          <div class="loader" id="loader"></div>
+      </div>
+  </div> 
+  </section>
     <section id="carrito" class="carrito">
       <h2>Carrito de Compras</h2>
       <ol id="lista-carrito"></ol>
