@@ -1,85 +1,55 @@
-const d = document;
-const $form = d.querySelector("#register-form");
-const $nameInput = d.querySelector("#name");
-const $nameError = d.querySelector("#name-error");
-const $emailInput = d.querySelector("#email");
-const $emailError = d.querySelector("#email-error");
-const $passwordInput = d.querySelector("#password");
-const $passwordError = d.querySelector("#password-error");
-const $confirmPasswordInput = d.querySelector("#confirm-password");
-const $confirmPasswordError = d.querySelector("#confirm-password-error");
-const $successMessage = d.querySelector("#success-message");
-const $errorsMessages = d.querySelectorAll(".error");
+document.getElementById('registroForm').addEventListener('submit', function(event) {
+  event.preventDefault(); // Evita el envío automático del formulario
 
-// Función de Validación del Formulario
-function validateForm(e) {
-  // Reiniciar mensajes de error y éxito
-  $errorsMessages.forEach((el) => {
-    el.innerText = "";
-  });
-  $successMessage.innerText = "";
+  // Limpiar mensajes de error previos
+  document.getElementById('errorNombre').textContent = '';
+  document.getElementById('errorCorreo').textContent = '';
+  document.getElementById('errorPassword').textContent = '';
+  document.getElementById('errorConfirmPassword').textContent = '';
 
-  let isValid = true;
+  // Obtener los valores del formulario
+  const nombre = document.getElementById('nombre').value;
+  const correo = document.getElementById('correo').value;
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
 
-  //Validar Nombre
-  if ($nameInput.value.trim() === "") {
-    $nameError.innerText = "El nombre es obligatorio";
-    isValid = false;
-  }else {
-    // Validar solo letras y espacios usando una expresión regular
-    const nombreValido = /^[A-Za-z\s]+$/.test($nameInput.value.trim());
-    if (!nombreValido) {
-      $nameError.innerText = "El nombre solo debe contener letras y espacios";
-      isValid = false;
-    } else {
-      $nameError.innerText = ""; // Limpiar el error si la validación es correcta
-    }
+  let esValido = true;
+
+  // Validación del nombre: No vacío y solo letras y espacios
+  const nombreRegex = /^[a-zA-Z\s]+$/;
+  if (!nombre || !nombreRegex.test(nombre)) {
+    document.getElementById('errorNombre').textContent = 'Por favor, introduce un nombre válido (solo letras y espacios).';
+    esValido = false;
   }
 
-  //Validar Email
-  let emailPattern = /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/;
-  if ($emailInput.value.trim() === "") {
-    $emailError.innerText = "El email es obligatorio";
-    isValid = false;
-  } else if (!emailPattern.test($emailInput.value.trim())) {
-    $emailError.innerText = "El formato del correo no es válido";
-    isValid = false;
+  // Validación del correo electrónico con regex
+  const correoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!correo || !correoRegex.test(correo)) {
+    document.getElementById('errorCorreo').textContent = 'Por favor, introduce un correo electrónico válido.';
+    esValido = false;
   }
 
-  //Validar Password
-  if ($passwordInput.value.trim() === "") {
-    $passwordError.innerText = "La contraseña es obligatorio";
-    isValid = false;
-  } else if ($passwordInput.value.trim().length < 8) {
-    $passwordError.innerText = "La contraseña debe tener al menos 8 caracteres";
-    isValid = false;
-  }else {
-    // Validar que la contraseña cumpla con los requisitos
-    const passwordValida = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test($passwordInput.value.trim());
-    
-    if (!passwordValida) {
-      $passwordError.innerText = "La contraseña debe incluir al menos una mayúscula, una minúscula, un número y un carácter especial";
-      isValid = false;
-    } else {
-      $passwordError.innerText = ""; // Limpiar el error si la validación es correcta
-    }
+  // Validación de la contraseña: Al menos 8 caracteres, 1 número, 1 mayúscula, 1 minúscula, 1 carácter especial
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  if (!password || !passwordRegex.test(password)) {
+    document.getElementById('errorPassword').textContent = 'La contraseña debe tener al menos 8 caracteres, incluyendo 1 número, 1 mayúscula, 1 minúscula y 1 carácter especial.';
+    esValido = false;
   }
 
-  //Validar Confirmar Password
-  if ($confirmPasswordInput.value.trim() !== $passwordInput.value.trim()) {
-    $confirmPasswordError.innerText = "Las contraseñas no coinciden";
-    isValid = false;
+  // Validación de la confirmación de la contraseña
+  if (password !== confirmPassword) {
+    document.getElementById('errorConfirmPassword').textContent = 'Las contraseñas no coinciden.';
+    esValido = false;
   }
 
-  if (!isValid) {
-    //Prevenir el envío del formulario si hay errores
-    e.preventDefault();
-  } else {
-    e.preventDefault();
-    $successMessage.innerText = "Formulario enviado exitosamente.";
-    $form.reset();
-    // Aquí puedes manejar el envío real de datos a un servidor, por ejemplo, usando fetch.
-  }
-}
+  // Si todas las validaciones son correctas, simula el envío del formulario con un loader
+  if (esValido) {
+    document.getElementById('loader').style.display = 'block'; // Mostrar loader
 
-$form.addEventListener("submit", validateForm);
+    setTimeout(function() {
+      document.getElementById('loader').style.display = 'none'; // Ocultar loader
+      document.getElementById('successMessage').style.display = 'block'; // Mostrar mensaje de éxito
+      document.getElementById('registroForm').reset(); // Reiniciar el formulario
+    }, 5000); // Simula un envío de 5 segundos
+  }
+});
